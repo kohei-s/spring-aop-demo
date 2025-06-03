@@ -28,7 +28,7 @@ public class SpringAopDemoApplication {
 		theAccountDAO.addAccount();
 
 		// call the membership business method
-		theMembershipDAO.addAccount();
+		theMembershipDAO.addSillyMember();
 
 	}
 
