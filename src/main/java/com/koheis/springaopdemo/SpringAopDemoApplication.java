@@ -26,6 +26,10 @@ public class SpringAopDemoApplication {
 		// call the business method
 		theAccountDAO.addAccount();
 
+		// call the business method again
+		System.out.println("\n let's call it again \n");
+		theAccountDAO.addAccount();
+
 
 	}
 
