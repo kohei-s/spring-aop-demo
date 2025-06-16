@@ -9,13 +9,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyDemoLoggingAspect {
 
-    // this is where we add all of our related advices for logging
-
     @Pointcut("execution(* com.koheis.springaopdemo.dao.*.*(..))")
     private void forDaoPackage(){}
 
-    @Before("forDaoPackage()")
+    // create a pointcut for getter methods
+    @Pointcut("execution(* com.koheis.springaopdemo.dao.*.get*(..))")
+    public void getter(){}
+
+    // create a pointcut for setter methods
+    @Pointcut("execution(* com.koheis.springaopdemo.dao.*.set*(..))")
+    public void setter(){}
+
+    // create pointcut: include package ... exclude getter/setter
+    @Pointcut("forDaoPackage() && !(getter() || setter())")
+    public void forDaoPackageNoGetterSetter(){}
+
+    @Before("forDaoPackageNoGetterSetter()")
     public void beforeAddAccountAdvice() {
         System.out.println("\n=========>>> Executing @Before advice on method");
     }
+
+    @Before("forDaoPackageNoGetterSetter()")
+    public void performApiAnalytics(){
+        System.out.println("\n=========>>> Performing API analytics");
+    }
+
 }

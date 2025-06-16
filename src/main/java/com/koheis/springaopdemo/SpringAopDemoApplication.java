@@ -29,6 +29,13 @@ public class SpringAopDemoApplication {
 		theAccountDAO.addAccount(myAccount, true);
 		theAccountDAO.doWork();
 
+		// call the accountdao getter/setter methods
+		theAccountDAO.setName("foober");
+		theAccountDAO.setServiceCode("silver");
+
+		String name = theAccountDAO.getName();
+		String serviceCode = theAccountDAO.getServiceCode();
+
 		// call the membership business method
 		theMembershipDAO.addSillyMember();
 		theMembershipDAO.goToSleep();
