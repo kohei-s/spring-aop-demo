@@ -2,6 +2,7 @@ package com.koheis.springaopdemo.aspect;
 
 import com.koheis.springaopdemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
@@ -13,6 +14,41 @@ import java.util.List;
 @Component
 @Order(2)
 public class MyDemoLoggingAspect {
+
+    @Around("execution(* com.koheis.springaopdemo.service.*.getFortune(..))")
+    public Object aroundLoggingAspect(ProceedingJoinPoint theProceedingjoinPoint) throws Throwable {
+
+        // print out which method we are advising on
+        String method = theProceedingjoinPoint.getSignature().toShortString();
+        System.out.println("\n======>>> Executing @Around on method: " + method);
+
+        // get begin timestamp
+        // long begin = System.currentTimeMillis();
+        long begin = System.nanoTime();
+
+        // now, Let's execute the method
+        Object result = null;
+
+        try {
+            result = theProceedingjoinPoint.proceed();
+        } catch (Exception exc) {
+            // log the exception
+            System.out.println(exc.getMessage());
+
+            // rethrow exception
+            throw exc;
+        }
+
+        // get end timestamp
+        // long end = System.currentTimeMillis();
+        long end = System.nanoTime();
+
+        // compute duration and display it
+        long duartion = end - begin;
+        System.out.println("\n======> Duration: " + duartion + " nanoseconds");
+
+        return result;
+    }
 
     @After("execution(* com.koheis.springaopdemo.dao.AccountDAO.findAccounts(..))")
     public void afterFinallyFindAccountsAdvice(JoinPoint theJoinPoint) {
