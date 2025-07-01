@@ -12,7 +12,7 @@ public class MyApiAnalyticsAspect {
 
     @Before("com.koheis.springaopdemo.aspect.AopExpressions.forDaoPackageNoGetterSetter()")
     public void performApiAnalytics(){
-        System.out.println("\n=========>>> Performing API analytics");
+        System.out.println("\n======>>> Performing API analytics");
     }
 
 }
