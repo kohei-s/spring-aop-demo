@@ -3,6 +3,7 @@ package com.koheis.springaopdemo.aspect;
 import com.koheis.springaopdemo.Account;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -15,6 +16,22 @@ import java.util.List;
 @Component
 @Order(2)
 public class MyDemoLoggingAspect {
+
+    @AfterThrowing(
+            pointcut="execution(* com.koheis.springaopdemo.dao.AccountDAO.findAccounts(..))",
+            throwing="theExc"
+    )
+    public void afterThrowingFindAccountsAdvice(JoinPoint theJoinPoint, Throwable theExc) {
+
+        // print out which method we are advising on
+        String method = theJoinPoint.getSignature().toShortString();
+        System.out.println("\n======>>> Executing @AfterThrowing on method: " + method);
+
+        // log the exception
+        System.out.println("\n======>>> The Exception is: " + theExc);
+
+    }
+
 
     // add anew advice for @AfterReturning on the findAccounts method
     @AfterReturning(
@@ -52,7 +69,6 @@ public class MyDemoLoggingAspect {
         }
 
 
-
     }
 
 
@@ -76,14 +92,12 @@ public class MyDemoLoggingAspect {
             if (tempArg instanceof Account) {
 
                 // downcast and print Account specific stuff
-                Account theAccount =  (Account) tempArg;
+                Account theAccount = (Account) tempArg;
                 System.out.println("account name: " + theAccount.getName());
                 System.out.println("account level: " + theAccount.getLevel());
             }
 
         }
-
-
 
 
     }
